@@ -1,4 +1,4 @@
-package mockdb.utils;
+package mockdb.core.utils;
 
 import static java.lang.String.format;
 
