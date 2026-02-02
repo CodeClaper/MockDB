@@ -1,12 +1,10 @@
-package mockdb.jdbc;
+package mockdb.core.jdbc;
 
 import junit.framework.TestCase;
 
-import java.sql.Driver;
-
 public class MockDriverTest extends TestCase {
 
-    public void testDriverLoader() {
-        Class.forName("")
+    public void testDriverLoader() throws ClassNotFoundException {
+        Class.forName("mockdb.core.jdbc.MockDriver");
     }
 }
