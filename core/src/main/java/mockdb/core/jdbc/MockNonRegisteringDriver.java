@@ -1,4 +1,4 @@
-package mockdb.jdbc;
+package mockdb.core.jdbc;
 
 import java.io.Closeable;
 import java.io.IOException;
@@ -26,12 +26,12 @@ public class MockNonRegisteringDriver implements Driver, Closeable {
 
     @Override
     public int getMajorVersion() {
-        return DriverInfo.DRIVER_VERSION_MAJOR;
+        return mockdb.core.jdbc.DriverInfo.DRIVER_VERSION_MAJOR;
     }
 
     @Override
     public int getMinorVersion() {
-        return DriverInfo.DRIVER_VERSION_MINOR;
+        return mockdb.core.jdbc.DriverInfo.DRIVER_VERSION_MINOR;
     }
 
     @Override
