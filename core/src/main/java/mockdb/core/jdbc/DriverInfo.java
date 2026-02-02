@@ -1,6 +1,6 @@
-package mockdb.jdbc;
+package mockdb.core.jdbc;
 
-import mockdb.utils.Assert;
+import mockdb.core.utils.Assert;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -23,7 +23,7 @@ public final class DriverInfo {
     static {
         try {
             Properties properties = new Properties();
-            URL url = Thread.currentThread().getClass().getResource("driver.properties");
+            URL url = DriverInfo.class.getResource("/driver.properties");
             Assert.notNull(url, "driver.properties not found.");
             try (InputStream in = url.openStream()) {
                 properties.load(in);
