@@ -1,4 +1,4 @@
-package mockdb.jdbc;
+package mockdb.core.jdbc;
 
 import java.sql.*;
 import java.util.Collections;

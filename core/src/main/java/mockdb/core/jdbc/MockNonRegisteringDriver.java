@@ -1,18 +1,22 @@
 package mockdb.jdbc;
 
+import java.io.Closeable;
+import java.io.IOException;
 import java.sql.*;
 import java.util.Properties;
 import java.util.logging.Logger;
 
-public class MockDriver implements Driver {
+public class MockNonRegisteringDriver implements Driver, Closeable {
     @Override
     public Connection connect(String url, Properties info) throws SQLException {
-        return null;
+        if (this.acceptsURL(url)) return null;
+        return new MockConnector();
     }
 
     @Override
     public boolean acceptsURL(String url) throws SQLException {
-        return false;
+        if (url == null) throw new SQLException("URL is null");
+        return MockDriverUri.acceptsURL(url);
     }
 
     @Override
@@ -22,12 +26,12 @@ public class MockDriver implements Driver {
 
     @Override
     public int getMajorVersion() {
-        return 0;
+        return DriverInfo.DRIVER_VERSION_MAJOR;
     }
 
     @Override
     public int getMinorVersion() {
-        return 0;
+        return DriverInfo.DRIVER_VERSION_MINOR;
     }
 
     @Override
@@ -38,5 +42,10 @@ public class MockDriver implements Driver {
     @Override
     public Logger getParentLogger() throws SQLFeatureNotSupportedException {
         return null;
+    }
+
+    @Override
+    public void close() throws IOException {
+
     }
 }
