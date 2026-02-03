@@ -16,4 +16,15 @@ public class Database {
     public boolean createTable(Table table) {
         return tableList.add(table);
     }
+
+    public String getName() {
+        return this.databaseName.get();
+    }
+
+    public boolean equals(Object obj) {
+        if (obj instanceof Database) {
+            return ((Database) obj).getName().equals(this.getName());
+        } else
+            return obj.equals(this);
+    }
 }

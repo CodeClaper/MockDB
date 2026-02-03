@@ -10,5 +10,6 @@ public enum ColumnType {
     FLOAT,
     STRING,
     DATE,
+    DATETIME,
     TIMESTAMP
 }

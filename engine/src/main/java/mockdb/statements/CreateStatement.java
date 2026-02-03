@@ -15,9 +15,9 @@ import java.util.List;
 import java.util.Locale;
 import java.util.stream.Collectors;
 
-public class Create {
+public class CreateStatement {
 
-    public boolean createTable(Statement statement) {
+    public Object execute(Statement statement) {
         Assert.isTrue(statement instanceof CreateTable, "Statement type error.");
         Table table = this.generateTable((CreateTable) statement);
         return true;
@@ -29,8 +29,8 @@ public class Create {
     }
 
     private MetaTable generateMetaTable(CreateTable createTable) {
-        return new MetaTable().setTableName(createTable.getTable().getName())
-
+        return new MetaTable()
+                .setTableName(createTable.getTable().getName())
                 .setMetaColumnList(this.generateMetaColumnList(createTable));}
 
     private List<MetaColumn> generateMetaColumnList(CreateTable createTable) {
@@ -52,6 +52,9 @@ public class Create {
             case "INT": return ColumnType.INT;
             case "VARCHAR": return ColumnType.VARCHAR;
             case "CHAR": return ColumnType.CHAR;
+            case "DATE": return ColumnType.DATE;
+            case "DATETIME": return ColumnType.DATETIME;
+            case "TIMESTAMP": return ColumnType.TIMESTAMP;
             default: throw new UnsupportedColumnTypeException("Unsupported column data: " + dataType);
         }
     }

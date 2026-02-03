@@ -1,5 +1,6 @@
 package mockdb.parser;
 
+import mockdb.exception.SQLSyntaxException;
 import net.sf.jsqlparser.JSQLParserException;
 import net.sf.jsqlparser.parser.CCJSqlParserUtil;
 import net.sf.jsqlparser.statement.Statement;
@@ -10,7 +11,7 @@ public class Jparser {
         try {
             return CCJSqlParserUtil.parse(sql);
         } catch (JSQLParserException e) {
-            throw new RuntimeException(e);
+            throw new SQLSyntaxException(e);
         }
     }
 }
