@@ -7,39 +7,22 @@
         <version>1.0-SNAPSHOT</version>
     </parent>
 
-    <artifactId>engine</artifactId>
+    <artifactId>common</artifactId>
     <packaging>jar</packaging>
 
-    <name>engine</name>
+    <name>common</name>
     <url>http://maven.apache.org</url>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <jsqlparser.version>4.9</jsqlparser.version>
     </properties>
 
     <dependencies>
-        <dependency>
-            <groupId>mockdb</groupId>
-            <artifactId>common</artifactId>
-            <version>1.0-SNAPSHOT</version>
-        </dependency>
-        <dependency>
-            <groupId>com.github.jsqlparser</groupId>
-            <artifactId>jsqlparser</artifactId>
-            <version>${jsqlparser.version}</version>
-        </dependency>
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
             <version>3.8.1</version>
             <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.projectlombok</groupId>
-            <artifactId>lombok</artifactId>
-            <version>1.18.30</version>
-            <scope>provided</scope>
         </dependency>
     </dependencies>
 </project>

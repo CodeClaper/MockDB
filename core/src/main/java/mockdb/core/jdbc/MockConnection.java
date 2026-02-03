@@ -1,7 +1,7 @@
 package mockdb.core.jdbc;
 
 import mockdb.core.exceptions.MockSQLException;
-import mockdb.core.utils.Assert;
+import mockdb.utils.Assert;
 
 import java.sql.*;
 import java.util.Collections;

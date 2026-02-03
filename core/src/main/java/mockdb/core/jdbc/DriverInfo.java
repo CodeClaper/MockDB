@@ -1,6 +1,6 @@
 package mockdb.core.jdbc;
 
-import mockdb.core.utils.Assert;
+import mockdb.utils.Assert;
 
 import java.io.IOException;
 import java.io.InputStream;
