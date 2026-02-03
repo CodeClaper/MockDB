@@ -1,15 +1,34 @@
 package mockdb.core.jdbc;
 
+import mockdb.core.exceptions.MockSQLException;
+import mockdb.core.utils.Assert;
+
 import java.sql.*;
 import java.util.Collections;
 import java.util.Map;
 import java.util.Properties;
+import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.Executor;
+import java.util.concurrent.atomic.AtomicBoolean;
+import static java.util.Collections.newSetFromMap;
 
-public class MockConnector implements Connection {
+public class MockConnection implements Connection {
+
+    private final AtomicBoolean closed = new AtomicBoolean(false);
+    private final AtomicBoolean autoCommit = new AtomicBoolean(true);
+    private final Set<MockStatement> statements = newSetFromMap(new ConcurrentHashMap<>());
+
     @Override
     public Statement createStatement() throws SQLException {
-        return null;
+        return this.doCreateStatement();
+    }
+
+    private MockStatement doCreateStatement() throws SQLException {
+        this.checkOpen();
+        MockStatement statement = new MockStatement(this);
+        this.registerStatement(statement);
+        return statement;
     }
 
     @Override
@@ -29,17 +48,24 @@ public class MockConnector implements Connection {
 
     @Override
     public void setAutoCommit(boolean autoCommit) throws SQLException {
-
+        this.checkOpen();
+        if (autoCommit && !getAutoCommit()) this.commit();
+        this.autoCommit.set(autoCommit);
     }
 
     @Override
     public boolean getAutoCommit() throws SQLException {
-        return false;
+        this.checkOpen();
+        return this.autoCommit.get();
     }
 
     @Override
     public void commit() throws SQLException {
-
+        this.checkOpen();
+        if (this.getAutoCommit())
+            throw new MockSQLException("Connection is in auto-commit mode.");
+        MockStatement statement = this.doCreateStatement();
+        statement.execute("COMMIT");
     }
 
     @Override
@@ -54,7 +80,7 @@ public class MockConnector implements Connection {
 
     @Override
     public boolean isClosed() throws SQLException {
-        return false;
+        return closed.get();
     }
 
     @Override
@@ -209,7 +235,8 @@ public class MockConnector implements Connection {
 
     @Override
     public boolean isValid(int timeout) throws SQLException {
-        return false;
+        if (timeout < 0) throw new MockSQLException("Timeout is negative");
+        return !isClosed();
     }
 
     @Override
@@ -275,5 +302,22 @@ public class MockConnector implements Connection {
     @Override
     public boolean isWrapperFor(Class<?> iface) throws SQLException {
         return false;
+    }
+
+    protected boolean shouldStartTransaction() {
+        return !this.autoCommit.get();
+    }
+
+    private void checkOpen() throws SQLException {
+        if (this.isClosed())
+            throw new MockSQLException("Connection is closed");
+    }
+
+    private void registerStatement(MockStatement statement) {
+        Assert.isTrue(statements.add(statement), "Statement is already registered.");
+    }
+
+    private void unregisterStatement(MockStatement statement) {
+        Assert.isTrue(statements.remove(statement), "Statement is not registered");
     }
 }

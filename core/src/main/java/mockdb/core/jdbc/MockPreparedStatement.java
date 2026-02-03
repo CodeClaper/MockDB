@@ -8,6 +8,11 @@ import java.sql.*;
 import java.util.Calendar;
 
 public class MockPreparedStatement extends MockStatement implements PreparedStatement {
+
+    public MockPreparedStatement(MockConnection connection) {
+        super(connection);
+    }
+
     @Override
     public ResultSet executeQuery() throws SQLException {
         return null;
