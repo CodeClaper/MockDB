@@ -1,11 +1,19 @@
 package mockdb.store;
 
-import lombok.Data;
+import java.util.Collections;
+import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.atomic.AtomicReference;
 
-import java.util.List;
-
-@Data
 public class Database {
-    private String databaseName;
-    private List<Table> tableList;
+    private final AtomicReference<String> databaseName = new AtomicReference<>();
+    private final Set<Table> tableList = Collections.newSetFromMap(new ConcurrentHashMap<>());
+
+    public Database(String databaseName) {
+        this.databaseName.set(databaseName);
+    }
+
+    public boolean createTable(Table table) {
+        return tableList.add(table);
+    }
 }

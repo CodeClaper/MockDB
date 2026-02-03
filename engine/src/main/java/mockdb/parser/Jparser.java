@@ -6,7 +6,7 @@ import net.sf.jsqlparser.statement.Statement;
 
 public class Jparser {
 
-    public Statement parse(String sql) {
+    public static Statement parse(String sql) {
         try {
             return CCJSqlParserUtil.parse(sql);
         } catch (JSQLParserException e) {
