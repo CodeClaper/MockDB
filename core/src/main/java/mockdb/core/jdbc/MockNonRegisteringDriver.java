@@ -9,7 +9,7 @@ import java.util.logging.Logger;
 public class MockNonRegisteringDriver implements Driver, Closeable {
     @Override
     public Connection connect(String url, Properties info) throws SQLException {
-        if (this.acceptsURL(url)) return null;
+        if (!this.acceptsURL(url)) return null;
         return new MockConnection();
     }
 

@@ -11,6 +11,7 @@ import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.Executor;
 import java.util.concurrent.atomic.AtomicBoolean;
+
 import static java.util.Collections.newSetFromMap;
 
 public class MockConnection implements Connection {
@@ -18,6 +19,10 @@ public class MockConnection implements Connection {
     private final AtomicBoolean closed = new AtomicBoolean(false);
     private final AtomicBoolean autoCommit = new AtomicBoolean(true);
     private final Set<MockStatement> statements = newSetFromMap(new ConcurrentHashMap<>());
+
+    public MockConnection() {
+
+    }
 
     @Override
     public Statement createStatement() throws SQLException {

@@ -9,7 +9,7 @@ import java.util.Calendar;
 
 public class MockPreparedStatement extends MockStatement implements PreparedStatement {
 
-    public MockPreparedStatement(MockConnection connection) {
+    public MockPreparedStatement(MockConnection connection) throws SQLException {
         super(connection);
     }
 
