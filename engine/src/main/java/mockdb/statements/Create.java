@@ -1,5 +1,6 @@
 package mockdb.statements;
 
+import mockdb.exception.UnsupportedColumnTypeException;
 import mockdb.meta.ColumnType;
 import mockdb.meta.MetaColumn;
 import mockdb.meta.MetaTable;
@@ -11,6 +12,7 @@ import net.sf.jsqlparser.statement.create.table.ColumnDefinition;
 import net.sf.jsqlparser.statement.create.table.CreateTable;
 
 import java.util.List;
+import java.util.Locale;
 import java.util.stream.Collectors;
 
 public class Create {
@@ -27,8 +29,9 @@ public class Create {
     }
 
     private MetaTable generateMetaTable(CreateTable createTable) {
-        return new MetaTable().setTableName(createTable.getTable().getName());
-    }
+        return new MetaTable().setTableName(createTable.getTable().getName())
+
+                .setMetaColumnList(this.generateMetaColumnList(createTable));}
 
     private List<MetaColumn> generateMetaColumnList(CreateTable createTable) {
         return createTable.getColumnDefinitions().stream()
@@ -44,10 +47,17 @@ public class Create {
     }
 
     private ColumnType convertColumnType(ColDataType colDataType) {
-        return ColumnType.INT;
+        String dataType = colDataType.getDataType().toUpperCase(Locale.ROOT);
+        switch (dataType) {
+            case "INT": return ColumnType.INT;
+            case "VARCHAR": return ColumnType.VARCHAR;
+            case "CHAR": return ColumnType.CHAR;
+            default: throw new UnsupportedColumnTypeException("Unsupported column data: " + dataType);
+        }
     }
 
     private int convertColumnLength(ColDataType colDataType) {
-        return 0;
+        if (colDataType.getArgumentsStringList() == null) return 0;
+        else return Integer.parseInt(colDataType.getArgumentsStringList().get(0));
     }
 }
